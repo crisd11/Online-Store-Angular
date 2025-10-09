@@ -1,0 +1,53 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
+import { TokenService } from './token.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  // Ajustá la base URL a tu API .NET en desarrollo (ej: https://localhost:7234/api)
+  private baseUrl = '/api/auth';
+
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
+
+  login(payload: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, payload)
+      .pipe(
+        tap(res => {
+          if (res?.token) {
+            this.tokenService.saveToken(res.token);
+            // si el backend devuelve user info o role, guardalo también
+            this.tokenService.saveUser({ role: res.role });
+          }
+        })
+      );
+  }
+
+  register(payload: RegisterRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, payload)
+      .pipe(
+        tap(res => {
+          if (res?.token) {
+            this.tokenService.saveToken(res.token);
+            this.tokenService.saveUser({ role: res.role });
+          }
+        })
+      );
+  }
+
+  logout() {
+    this.tokenService.signOut();
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.tokenService.getToken();
+  }
+
+  getUserRole(): string | null {
+    const user = this.tokenService.getUser();
+    return user?.role ?? null;
+  }
+}

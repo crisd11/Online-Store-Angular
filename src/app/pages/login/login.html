@@ -1,0 +1,35 @@
+<div class="login-wrapper fade-in">
+  <mat-card class="login-card">
+    <div class="logo-container">
+      <img src="assets/images/logo.png" alt="Aycron" class="logo" />
+    </div>
+
+    <h2 class="text-center">Iniciar sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+        <mat-error *ngIf="form.controls['email'].hasError('required')">El email es requerido</mat-error>
+        <mat-error *ngIf="form.controls['email'].hasError('email')">Ingresá un email válido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" />
+        <mat-error *ngIf="form.controls['password'].hasError('required')">La contraseña es requerida</mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="full-width mt-2" [disabled]="form.invalid || loading">
+        <ng-container *ngIf="!loading">Entrar</ng-container>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+      </button>
+    </form>
+
+    <p class="text-center mt-2">
+      ¿No tenés cuenta? <a routerLink="/register">Registrate</a>
+    </p>
+
+    <p *ngIf="error" class="error text-center mt-1">{{ error }}</p>
+  </mat-card>
+</div>
