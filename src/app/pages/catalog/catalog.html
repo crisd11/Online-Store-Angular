@@ -1,0 +1,77 @@
+<div class="catalog-wrapper">
+  <section class="filters">
+    <form [formGroup]="form" class="filters-form">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Buscar</mat-label>
+        <input matInput formControlName="search" placeholder="Producto, descripción..." />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Categoría</mat-label>
+        <mat-select formControlName="category">
+          <mat-option value="">Todas</mat-option>
+          <mat-option *ngFor="let c of categories" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Ordenar por</mat-label>
+        <mat-select formControlName="sortBy">
+          <mat-option value="createdAt">Novedades</mat-option>
+          <mat-option value="name">Nombre</mat-option>
+          <mat-option value="price">Precio</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <mat-select formControlName="sortDir">
+          <mat-option value="asc">Ascendente</mat-option>
+          <mat-option value="desc">Descendente</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio mín.</mat-label>
+        <input matInput type="number" formControlName="minPrice" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio máx.</mat-label>
+        <input matInput type="number" formControlName="maxPrice" />
+      </mat-form-field>
+
+      <button mat-stroked-button type="button" (click)="clearFilters()">
+        <mat-icon>clear</mat-icon>
+        Limpiar
+      </button>
+    </form>
+  </section>
+
+  <section class="grid" *ngIf="!loading()">
+    <mat-card class="product" *ngFor="let p of products">
+      <img [src]="p.imageUrl || 'assets/images/placeholder.png'" [alt]="p.name" />
+      <div class="info">
+        <h3>{{ p.name }}</h3>
+        <p class="price">{{ p.price | currency:'USD':'symbol' }}</p>
+        <p class="category" *ngIf="p.category">{{ p.category }}</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="addToCart(p)">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Agregar
+      </button>
+    </mat-card>
+  </section>
+
+  <section class="loading" *ngIf="loading()">
+    <mat-icon>hourglass_top</mat-icon> Cargando...
+  </section>
+
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageIndex]="page - 1"
+    [pageSizeOptions]="[6, 12, 24]"
+    (page)="pageChange($event)">
+  </mat-paginator>
+</div>
