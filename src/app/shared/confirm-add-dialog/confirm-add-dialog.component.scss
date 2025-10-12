@@ -1,0 +1,81 @@
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  gap: 1rem;
+
+  .product-image {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 1/1; // cuadrada
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .title-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    h2 {
+      font-size: 1.2rem;
+      margin: 0;
+      font-weight: 600;
+      flex: 1;
+      text-align: left;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #111827;
+      margin-left: 1rem;
+      white-space: nowrap;
+    }
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0.5rem;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .quantity-number {
+      font-size: 1.2rem;
+      font-weight: 600;
+      min-width: 20px;
+      text-align: center;
+    }
+  }
+
+  .actions {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+
+    button {
+      flex: 1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-container {
+    max-width: 95vw;
+    padding: 1rem;
+  }
+}

@@ -1,15 +1,30 @@
-import { Injectable } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { inject } from '@angular/core';
+import { TokenService } from '../services/token.service';
+
+function isJwtExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (!payload?.exp)
+      return false; // si no hay exp, no expiramos
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp < now;
+  } 
+  catch {
+    return true; // si no se puede decodificar, trátalo como inválido
+  }
+}
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const injector = (route as any).injector;
-  const auth = injector.get(AuthService) as AuthService;
-  const router = injector.get(Router) as Router;
+  const router = inject(Router);
+  const tokenService = inject(TokenService);
 
-  if (auth.isLoggedIn()) {
+  const token = tokenService.getToken();
+  if (token && !isJwtExpired(token)) {
     return true;
   }
-  router.navigate(['/login']);
+
+  // no autenticado -> redirijo a login con returnUrl
+  router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
   return false;
 };

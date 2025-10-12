@@ -11,6 +11,9 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { debounceTime } from 'rxjs';
 import { Product, ProductQuery } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmAddDialogComponent } from '../../shared/confirm-add-dialog/confirm-add-dialog.component'
+import { CartService } from '../../services/cart.service';
 
 @Component({
   standalone: true,
@@ -34,7 +37,10 @@ export class CatalogComponent implements OnInit {
   
   categories = ['Audio', 'Periféricos', 'Monitores', 'Video'];
 
-  constructor(private fb: FormBuilder, private productService: ProductService) {}
+  constructor(private fb: FormBuilder,
+    private productService: ProductService,
+    private cartService: CartService,
+    private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -86,7 +92,16 @@ export class CatalogComponent implements OnInit {
   }
 
   addToCart(p: Product) {
-    // TODO: integrar con CartService (próximo paso)
-    console.log('Add to cart', p);
-  }
+  const dialogRef = this.dialog.open(ConfirmAddDialogComponent, {
+    data: p,
+    width: '400px'
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.cartService.addToCart(p, result);
+    }
+  });
+}
+
 }

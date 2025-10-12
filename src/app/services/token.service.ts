@@ -32,4 +32,27 @@ export class TokenService {
     this.removeToken();
     this.removeUser();
   }
+
+  getTokenPayload(): any | null {
+  const token = this.getToken();
+  if (!token) return null;
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch {
+    return null;
+  }
+}
+
+isTokenExpired(): boolean {
+  const token = this.getToken();
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (!payload?.exp) return false;
+    return payload.exp < Math.floor(Date.now() / 1000);
+  } catch {
+    return true;
+  }
+}
+
 }

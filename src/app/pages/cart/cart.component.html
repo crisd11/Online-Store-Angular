@@ -1,0 +1,119 @@
+<div class="cart-container" *ngIf="items.length > 0; else emptyCart">
+  <h2>Mi carrito</h2>
+
+  <!-- Desktop -->
+  <div class="cart-table-wrapper desktop-only">
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of items">
+          <td class="product-info">
+            <img
+              [src]="item.product.imageUrl || 'assets/images/placeholder.png'"
+              alt="{{ item.product.name }}"
+              class="product-img"
+            />
+            <div class="product-details">
+              <p class="name">{{ item.product.name }}</p>
+              <p class="category" *ngIf="item.product.category">
+                {{ item.product.category }}
+              </p>
+            </div>
+          </td>
+          <td class="price">
+            {{ item.product.price | currency }}
+          </td>
+          <td class="quantity">
+            <input
+              type="number"
+              min="1"
+              [value]="item.quantity"
+              (change)="changeQuantity(item.product.id, +$event.target.value)"
+            />
+          </td>
+          <td class="subtotal">
+            {{ item.quantity * item.product.price | currency }}
+          </td>
+          <td class="actions">
+            <button mat-icon-button color="warn" (click)="removeItem(item.product.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mobile -->
+  <div class="mobile-only">
+    <div class="cart-card" *ngFor="let item of items">
+      <div class="card-header">
+        <img
+          [src]="item.product.imageUrl || 'assets/images/placeholder.png'"
+          alt="{{ item.product.name }}"
+          class="mobile-img"
+        />
+        <div class="info">
+          <h3>{{ item.product.name }}</h3>
+          <p *ngIf="item.product.category">{{ item.product.category }}</p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <p><strong>Precio:</strong> {{ item.product.price | currency }}</p>
+
+        <div class="quantity-row">
+          <label>Cantidad:</label>
+          <input
+            type="number"
+            min="1"
+            [value]="item.quantity"
+            (change)="changeQuantity(item.product.id, +$event.target.value)"
+          />
+        </div>
+
+        <p><strong>Subtotal:</strong> {{ item.quantity * item.product.price | currency }}</p>
+      </div>
+
+      <div class="card-actions">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="removeItem(item.product.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-summary">
+    <p><strong>Total:</strong> {{ getTotal() | currency }}</p>
+    <div class="buttons">
+      <button mat-raised-button color="primary" routerLink="/checkout">
+        Ir al pago
+      </button>
+      <button mat-stroked-button color="warn" (click)="clearCart()">
+        Vaciar carrito
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <div class="empty-cart">
+    <p>Tu carrito está vacío</p>
+    <button mat-raised-button color="primary" routerLink="/catalog">
+      Volver al catálogo
+    </button>
+  </div>
+</ng-template>
