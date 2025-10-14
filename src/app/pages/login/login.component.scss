@@ -1,0 +1,74 @@
+@use '../../../styles/variables' as *;
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 120px); // Ajuste según alto del header+footer
+  padding: 1rem 0; // Para que no quede pegado
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-card {
+  width: 100%; 
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  background-color: $card-bg;
+
+  h2 {
+    margin: 0 0 1rem 0;
+  }
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+
+  .logo {
+    width: 120px;
+    height: auto;
+  }
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.error {
+  color: $warn-color;
+  font-size: 0.9rem;
+}
+
+.recover-link {
+  cursor: pointer;
+  color: #1976d2;
+  text-decoration: underline;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

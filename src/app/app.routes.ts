@@ -6,27 +6,22 @@ import { CatalogComponent } from './pages/catalog/catalog.component';
 import { CartComponent } from './pages/cart/cart.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'reset-password', component: ResetPasswordComponent},
       { path: 'catalog', component: CatalogComponent, canActivate: [authGuard] },
       { path: 'cart', component: CartComponent, canActivate: [authGuard] },
       /*
-      {
-        path: 'admin',
-        loadComponent: () =>
-          import('./pages/admin-dashboard/admin-dashboard.component').then(
-            m => m.AdminDashboardComponent
-          ),
-        canActivate: [adminGuard]
-      },
+      { path: 'admin', component: AdminDashboardComponent, canActivate [adminGuard] },
       */
-      { path: '', redirectTo: 'login', pathMatch: 'full' }
+      { path: '', redirectTo: 'catalog', pathMatch: 'full' }
     ]
   },
   { path: '**', redirectTo: 'login' }

@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { RecoverPasswordDialogComponent } from '../recover-password-dialog/recover-password-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
   selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatProgressSpinnerModule
+    CommonModule, RouterModule, ReactiveFormsModule,
+    MatCardModule, MatFormFieldModule, MatInputModule,
+    MatButtonModule, MatProgressSpinnerModule
   ]
 })
 export class LoginComponent implements OnInit {
@@ -33,7 +32,9 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private resetPassDialog: MatDialog,
+    private snackBar: MatSnackBar 
   ) {}
 
   ngOnInit(): void {
@@ -64,4 +65,41 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
+openRecoverDialog() {
+  const dialogRef = this.resetPassDialog.open(RecoverPasswordDialogComponent, {
+    width: '400px'
+  });
+
+  dialogRef.afterClosed().subscribe(email => {
+    if (email) {
+      this.loading = true;
+      this.auth.recoverPassword(email).subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          // ✅ Mostrar mensaje correcto desde backend o uno por defecto
+          this.showSnack(
+            res?.message || 'Se envió un correo con las instrucciones para recuperar tu contraseña.'
+          );
+        },
+        error: err => {
+          this.loading = false;
+          this.showSnack(
+            err?.error?.message || 'No se pudo procesar el pedido.'
+          );
+        }
+      });
+    }
+  });
+}
+
+private showSnack(message: string) {
+  this.snackBar.open(message, 'OK', {
+    horizontalPosition: 'center',
+    verticalPosition: 'top',
+    panelClass: ['custom-snackbar']
+  });
+}
+
+
 }

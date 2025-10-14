@@ -50,4 +50,13 @@ export class AuthService {
     const user = this.tokenService.getUser();
     return user?.role ?? null;
   }
+
+  recoverPassword(email: string) {
+    return this.http.post(`${this.baseUrl}/recover-password`, { email });
+  }
+
+  resetPassword(token: string, newPassword: string) {
+    return this.http.post(`${this.baseUrl}/reset-password`, { token, newPassword });
+  }
+
 }

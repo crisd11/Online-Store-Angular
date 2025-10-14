@@ -77,3 +77,16 @@ a:hover { text-decoration: underline; }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.snackbar-success {
+  background-color: #4caf50 !important; /* Verde Material */
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.snackbar-error {
+  background-color: #f44336 !important; /* Rojo Material */
+  color: #fff !important;
+  font-weight: 500;
+}
+
