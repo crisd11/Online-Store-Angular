@@ -1,14 +1,14 @@
 <div class="cart-container" *ngIf="items.length > 0; else emptyCart">
-  <h2>Mi carrito</h2>
+  <h2>My Cart</h2>
 
   <!-- Desktop -->
   <div class="cart-table-wrapper desktop-only">
     <table class="cart-table">
       <thead>
         <tr>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
           <th>Subtotal</th>
           <th></th>
         </tr>
@@ -69,10 +69,10 @@
       </div>
 
       <div class="card-body">
-        <p><strong>Precio:</strong> {{ item.product.price | currency }}</p>
+        <p><strong>Price:</strong> {{ item.product.price | currency }}</p>
 
         <div class="quantity-row">
-          <label>Cantidad:</label>
+          <label><strong>Quantity:</strong></label>
           <input
             type="number"
             min="1"
@@ -100,10 +100,10 @@
     <p><strong>Total:</strong> {{ getTotal() | currency }}</p>
     <div class="buttons">
       <button mat-raised-button color="primary" routerLink="/checkout">
-        Ir al pago
+        To Payment
       </button>
       <button mat-stroked-button color="warn" (click)="clearCart()">
-        Vaciar carrito
+        Empty Cart
       </button>
     </div>
   </div>
@@ -111,9 +111,9 @@
 
 <ng-template #emptyCart>
   <div class="empty-cart">
-    <p>Tu carrito está vacío</p>
+    <p>Your Cart is empty</p>
     <button mat-raised-button color="primary" routerLink="/catalog">
-      Volver al catálogo
+      Back to Catalog
     </button>
   </div>
 </ng-template>

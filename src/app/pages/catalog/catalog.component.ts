@@ -18,8 +18,8 @@ import { CartService } from '../../services/cart.service';
 @Component({
   standalone: true,
   selector: 'app-catalog',
-  templateUrl: './catalog.html',
-  styleUrls: ['./catalog.scss'],
+  templateUrl: './catalog.component.html',
+  styleUrls: ['./catalog.component.scss'],
   imports: [
     CommonModule, ReactiveFormsModule,
     MatCardModule, MatFormFieldModule, MatInputModule,
@@ -35,7 +35,7 @@ export class CatalogComponent implements OnInit {
   loading = signal(false);
   form!: FormGroup;
   
-  categories = ['Audio', 'Periféricos', 'Monitores', 'Video'];
+  categories = ['Audio', 'Peripheral', 'Tablets', 'Notebooks'];
 
   constructor(private fb: FormBuilder,
     private productService: ProductService,
@@ -46,13 +46,13 @@ export class CatalogComponent implements OnInit {
     this.form = this.fb.group({
     search: [''],
     category: [''],
-    sortBy: ['createdAt'],
-    sortDir: ['desc'],
+    sortBy: ['price'],
+    sortDir: ['asc'],
     minPrice: [''],
     maxPrice: ['']
   });
     this.form.valueChanges.pipe(debounceTime(300)).subscribe(() => {
-      this.page = 1; // reset paginación al cambiar filtros
+      this.page = 1;
       this.load();
     });
     this.load();
@@ -88,7 +88,7 @@ export class CatalogComponent implements OnInit {
   }
 
   clearFilters() {
-    this.form.reset({ search: '', category: '', sortBy: 'createdAt', sortDir: 'desc', minPrice: '', maxPrice: '' });
+    this.form.reset({ search: '', category: '', sortBy: 'price', sortDir: 'asc', minPrice: '', maxPrice: '' });
   }
 
   addToCart(p: Product) {

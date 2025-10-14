@@ -23,12 +23,12 @@ export class CartComponent {
     this.items = this.cartService.getItems();
   }
 
-  removeItem(id: string) {
+  removeItem(id: number) {
     this.cartService.removeFromCart(id);
     this.items = this.cartService.getItems();
   }
 
-  changeQuantity(id: string, quantity: number) {
+  changeQuantity(id: number, quantity: number) {
   if (quantity <= 0) {
     this.snackBar.open(
       'Para eliminar un producto, usá el botón correspondiente.',

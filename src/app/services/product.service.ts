@@ -19,7 +19,7 @@ export class ProductService {
     return this.http.get<PagedResult<Product>>(this.baseUrl, { params });
   }
 
-  getById(id: string): Observable<Product> {
+  getById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.baseUrl}/${id}`);
   }
 }

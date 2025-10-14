@@ -2,48 +2,48 @@
   <section class="filters">
     <form [formGroup]="form" class="filters-form">
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Buscar</mat-label>
-        <input matInput formControlName="search" placeholder="Producto, descripción..." />
+        <mat-label>Search</mat-label>
+        <input matInput formControlName="search" placeholder="Product, description" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Categoría</mat-label>
+        <mat-label>Category</mat-label>
         <mat-select formControlName="category">
-          <mat-option value="">Todas</mat-option>
+          <mat-option value="">All</mat-option>
           <mat-option *ngFor="let c of categories" [value]="c">{{ c }}</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Ordenar por</mat-label>
+        <mat-label>Order By</mat-label>
         <mat-select formControlName="sortBy">
-          <mat-option value="createdAt">Novedades</mat-option>
-          <mat-option value="name">Nombre</mat-option>
-          <mat-option value="price">Precio</mat-option>
+          <mat-option value="name">Name</mat-option>
+          <mat-option value="price">Price</mat-option>
+          <mat-option value="createdAt">Just in</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Dirección</mat-label>
+        <mat-label>Direction</mat-label>
         <mat-select formControlName="sortDir">
-          <mat-option value="asc">Ascendente</mat-option>
-          <mat-option value="desc">Descendente</mat-option>
+          <mat-option value="asc">Ascendant</mat-option>
+          <mat-option value="desc">Descendant</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Precio mín.</mat-label>
+        <mat-label>Min Price.</mat-label>
         <input matInput type="number" formControlName="minPrice" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Precio máx.</mat-label>
+        <mat-label>Max price.</mat-label>
         <input matInput type="number" formControlName="maxPrice" />
       </mat-form-field>
 
       <button mat-stroked-button type="button" (click)="clearFilters()">
         <mat-icon>clear</mat-icon>
-        Limpiar
+        Clean Filters
       </button>
     </form>
   </section>
