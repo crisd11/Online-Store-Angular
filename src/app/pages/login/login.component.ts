@@ -45,26 +45,23 @@ export class LoginComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.form.invalid)
-      return;
+  if (this.form.invalid)
+    return;
 
-    this.loading = true;
-    this.auth.login(this.form.value).subscribe({
-      next: () => {
-        const role = this.auth.getUserRole();
-        // ✅ Si venís redirigido por authGuard, tomamos el returnUrl
-        const returnUrl =
-          this.route.snapshot.queryParamMap.get('returnUrl') ||
-          (role === 'Admin' ? '/admin' : '/catalog');
-
-        this.router.navigateByUrl(returnUrl);
-      },
-      error: err => {
-        this.error = err?.error?.message ?? 'Error al iniciar sesión';
-        this.loading = false;
-      }
-    });
-  }
+  this.loading = true;
+  this.auth.login(this.form.value).subscribe({
+    next: (res) => {
+      const role = res?.role ?? this.auth.getUserRole() ?? 'User';
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || (role === 'Admin' ? '/catalog' : '/catalog');
+      this.router.navigateByUrl(returnUrl);
+      this.loading = false;
+    },
+    error: err => {
+      this.error = err?.error?.message ?? 'Error al iniciar sesión';
+      this.loading = false;
+    }
+  });
+}
 
 openRecoverDialog() {
   const dialogRef = this.resetPassDialog.open(RecoverPasswordDialogComponent, {

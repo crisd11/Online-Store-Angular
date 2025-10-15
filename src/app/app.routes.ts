@@ -16,7 +16,7 @@ export const routes: Routes = [
       { path: 'register', component: RegisterComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reset-password', component: ResetPasswordComponent},
-      { path: 'catalog', component: CatalogComponent, canActivate: [authGuard] },
+      { path: 'catalog', component: CatalogComponent },
       { path: 'cart', component: CartComponent, canActivate: [authGuard] },
       /*
       { path: 'admin', component: AdminDashboardComponent, canActivate [adminGuard] },

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -14,12 +15,18 @@ import { CartService } from '../../services/cart.service';
 export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   cartCount = 0;
+  isLogged = false;
+  showAccountMenu = false;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
   this.cartService.cartCount$.subscribe(count => {
     this.cartCount = count;
+    });
+    this.isLogged = this.authService.isLoggedIn();
+    this.authService.loggedIn$.subscribe(status => {
+      this.isLogged = status;
     });
   }
 
@@ -29,5 +36,16 @@ export class HeaderComponent implements OnInit {
 
   closeMenu() {
     this.isMenuOpen = false;
+  }
+
+  toggleAccountMenu() {
+  this.showAccountMenu = !this.showAccountMenu;
+  }
+
+  logout() {
+    this.authService.logout();
+    this.showAccountMenu = false;
+    this.isLogged = false;
+    this.router.navigate(['/login']);
   }
 }

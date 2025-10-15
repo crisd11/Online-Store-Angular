@@ -4,20 +4,25 @@
     <span class="brand">Online Store</span>
   </div>
 
-  <!-- Botón hamburguesa visible SOLO en pantallas chicas -->
   <button class="menu-toggle" (click)="toggleMenu()">
     <mat-icon>menu</mat-icon>
   </button>
 
-  <!-- Navegación -->
   <nav class="nav" [class.open]="isMenuOpen">
     <a routerLink="/catalog" routerLinkActive="active" (click)="closeMenu()">Catalog</a>
-    <a routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
-    <a routerLink="/register" routerLinkActive="active" (click)="closeMenu()">Register</a>
+    <a *ngIf="!isLogged" routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
+    <div *ngIf="isLogged" class="account-container">
+      <a class="account-link" (click)="toggleAccountMenu()">My Account</a>
+        <div *ngIf="showAccountMenu" class="account-dropdown">
+          <button (click)="logout()">Log out</button>
+        </div>
+    </div>
     <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()" class="cart-link">
       <span class="cart-icon-wrapper">
         <mat-icon>shopping_cart</mat-icon>
         <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
-      </span></a>
+      </span>
+    </a>
   </nav>
 </header>
+

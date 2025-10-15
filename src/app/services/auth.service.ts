@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
+import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Ajustá la base URL a tu API .NET en desarrollo (ej: https://localhost:7234/api)
+
   private baseUrl = '/api/auth';
   private loginSuccessSubject = new Subject<void>();
   loginSuccess$ = this.loginSuccessSubject.asObservable();
+  private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
+  loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(private http: HttpClient, private tokenService: TokenService, private cartService: CartService) {
+    const token = this.tokenService?.getToken();
+    this.loggedIn.next(!!token);
+  }
 
   login(payload: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/login`, payload)
@@ -24,6 +30,7 @@ export class AuthService {
             // si el backend devuelve user info o role, guardalo también
             this.tokenService.saveUser({ role: res.role });
             this.loginSuccessSubject.next();
+            this.loggedIn.next(true);
           }
         })
       );
@@ -43,10 +50,16 @@ export class AuthService {
 
   logout() {
     this.tokenService.signOut();
+    this.loggedIn.next(false);
+    this.cartService.resetCartState();
   }
 
   isLoggedIn(): boolean {
-    return !!this.tokenService.getToken();
+    try {
+      return !!this.tokenService?.getToken();
+    } catch {
+        return false;
+      }
   }
 
   getUserRole(): string | null {
