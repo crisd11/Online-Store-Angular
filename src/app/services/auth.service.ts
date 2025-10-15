@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
 
@@ -10,6 +10,8 @@ import { TokenService } from './token.service';
 export class AuthService {
   // Ajustá la base URL a tu API .NET en desarrollo (ej: https://localhost:7234/api)
   private baseUrl = '/api/auth';
+  private loginSuccessSubject = new Subject<void>();
+  loginSuccess$ = this.loginSuccessSubject.asObservable();
 
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
@@ -21,6 +23,7 @@ export class AuthService {
             this.tokenService.saveToken(res.token);
             // si el backend devuelve user info o role, guardalo también
             this.tokenService.saveUser({ role: res.role });
+            this.loginSuccessSubject.next();
           }
         })
       );

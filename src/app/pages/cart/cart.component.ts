@@ -20,12 +20,17 @@ export class CartComponent {
   items: CartItem[] = [];
 
   constructor(private cartService: CartService, private snackBar: MatSnackBar) {
-    this.items = this.cartService.getItems();
+    this.cartService.items$.subscribe(items => {
+      this.items = items;
+    });
   }
 
   removeItem(id: number) {
     this.cartService.removeFromCart(id);
-    this.items = this.cartService.getItems();
+    this.cartService.items$.subscribe(items => {
+      this.items = items;
+    });
+
   }
 
   changeQuantity(id: number, quantity: number) {
@@ -41,7 +46,9 @@ export class CartComponent {
     return;
   }
     this.cartService.updateQuantity(id, quantity);
-    this.items = this.cartService.getItems();
+    this.cartService.items$.subscribe(items => {
+      this.items = items;
+    });
   }
 
   getTotal() {
