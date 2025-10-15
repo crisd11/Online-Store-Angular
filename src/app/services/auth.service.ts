@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
-import { CartService } from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
   loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private cartService: CartService) {
+  constructor(private http: HttpClient, private tokenService: TokenService) {
     const token = this.tokenService?.getToken();
     this.loggedIn.next(!!token);
   }
@@ -51,7 +50,6 @@ export class AuthService {
   logout() {
     this.tokenService.signOut();
     this.loggedIn.next(false);
-    this.cartService.resetCartState();
   }
 
   isLoggedIn(): boolean {

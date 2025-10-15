@@ -9,6 +9,7 @@
   </button>
 
   <nav class="nav" [class.open]="isMenuOpen">
+    <a *ngIf="isLogged && role === 'Admin'" routerLink="/admin-dashboard" routerLinkActive="active"> AdminDashboard</a>
     <a routerLink="/catalog" routerLinkActive="active" (click)="closeMenu()">Catalog</a>
     <a *ngIf="!isLogged" routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
     <div *ngIf="isLogged" class="account-container">

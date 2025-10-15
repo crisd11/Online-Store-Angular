@@ -107,10 +107,4 @@ export class CartService {
     const total = this.items.reduce((sum, item) => sum + item.quantity, 0);
     this.cartCount.next(total);
   }
-
-  resetCartState() {
-  this.items = [];
-  this.cartCount.next(0);
-  this.itemsSubject.next([]);
-  }
 }

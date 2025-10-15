@@ -1,0 +1,21 @@
+.coming-soon-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: calc(100vh - 100px); // Ajusta según tu header
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #666;
+  }
+}

@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   isMenuOpen = false;
   cartCount = 0;
   isLogged = false;
+  role: string | null = null;
   showAccountMenu = false;
 
   constructor(private cartService: CartService, private authService: AuthService, private router: Router) {}
@@ -25,8 +26,11 @@ export class HeaderComponent implements OnInit {
     this.cartCount = count;
     });
     this.isLogged = this.authService.isLoggedIn();
+    this.role = this.authService.getUserRole();
+
     this.authService.loggedIn$.subscribe(status => {
       this.isLogged = status;
+      this.role = this.authService.getUserRole();
     });
   }
 
