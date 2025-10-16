@@ -30,7 +30,7 @@
       <a (click)="openRecoverDialog()" class="recover-link">Forgot your password?</a>
     </p>
     <p class="text-center mt-2">
-      Don't have an account? <a routerLink="/register">Register</a>
+      Don't have an account? <a class="recover-link" routerLink="/register">Register</a>
     </p>
 
     <p *ngIf="error" class="error text-center mt-1">{{ error }}</p>

@@ -8,6 +8,8 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { CheckoutSuccessComponent } from './pages/checkout-success/checkout-success.component';
+import { CheckoutCancelComponent } from './pages/checkout-cancel/checkout-cancel.component';
 
 export const routes: Routes = [
   {
@@ -19,6 +21,8 @@ export const routes: Routes = [
       { path: 'reset-password', component: ResetPasswordComponent},
       { path: 'catalog', component: CatalogComponent },
       { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+      { path: 'checkout-success', component: CheckoutSuccessComponent },
+      { path: 'checkout-cancel', component: CheckoutCancelComponent },
       { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [adminGuard]},
       { path: '', redirectTo: 'catalog', pathMatch: 'full' }
     ]

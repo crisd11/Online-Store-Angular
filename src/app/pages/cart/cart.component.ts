@@ -8,6 +8,7 @@ import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart-item.model';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CheckoutService } from '../../services/checkout.service';
 
 @Component({
   standalone: true,
@@ -19,7 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CartComponent {
   items: CartItem[] = [];
 
-  constructor(private cartService: CartService, private snackBar: MatSnackBar) {
+  constructor(private cartService: CartService, private snackBar: MatSnackBar, private checkoutService: CheckoutService) {
     this.cartService.items$.subscribe(items => {
       this.items = items;
     });
@@ -59,4 +60,22 @@ export class CartComponent {
     this.cartService.clearCart();
     this.items = [];
   }
+
+  checkout() {
+  this.checkoutService.createCheckoutSession().subscribe({
+    next: (res) => {
+      if (res.url) {
+        window.location.href = res.url; // Redirige a Stripe Checkout
+      }
+    },
+    error: (err) => {
+      console.error(err);
+      this.snackBar.open('No se pudo iniciar el pago.', 'OK', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
+    }
+  });
+}
+
 }

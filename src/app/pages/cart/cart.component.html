@@ -99,7 +99,7 @@
   <div class="cart-summary">
     <p><strong>Total:</strong> {{ getTotal() | currency }}</p>
     <div class="buttons">
-      <button mat-raised-button color="primary" routerLink="/checkout">
+      <button mat-raised-button color="primary" (click)="checkout()">
         To Payment
       </button>
       <button mat-stroked-button color="warn" (click)="clearCart()">

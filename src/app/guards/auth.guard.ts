@@ -6,12 +6,12 @@ function isJwtExpired(token: string): boolean {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
     if (!payload?.exp)
-      return false; // si no hay exp, no expiramos
+      return false;
     const now = Math.floor(Date.now() / 1000);
     return payload.exp < now;
   } 
   catch {
-    return true; // si no se puede decodificar, trátalo como inválido
+    return true;
   }
 }
 
@@ -24,7 +24,6 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  // no autenticado -> redirijo a login con returnUrl
   router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
   return false;
 };

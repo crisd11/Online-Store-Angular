@@ -9,8 +9,14 @@
   </button>
 
   <nav class="nav" [class.open]="isMenuOpen">
-    <a *ngIf="isLogged && role === 'Admin'" routerLink="/admin-dashboard" routerLinkActive="active"> AdminDashboard</a>
+    <a *ngIf="isLogged && role === 'Admin'" routerLink="/admin-dashboard" routerLinkActive="active"> Admin Dashboard</a>
     <a routerLink="/catalog" routerLinkActive="active" (click)="closeMenu()">Catalog</a>
+    <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()" class="cart-link">
+      <span class="cart-icon-wrapper">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+      </span>
+    </a>
     <a *ngIf="!isLogged" routerLink="/login" routerLinkActive="active" (click)="closeMenu()">Login</a>
     <div *ngIf="isLogged" class="account-container">
       <a class="account-link" (click)="toggleAccountMenu()">My Account</a>
@@ -18,12 +24,6 @@
           <button (click)="logout()">Log out</button>
         </div>
     </div>
-    <a routerLink="/cart" routerLinkActive="active" (click)="closeMenu()" class="cart-link">
-      <span class="cart-icon-wrapper">
-        <mat-icon>shopping_cart</mat-icon>
-        <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
-      </span>
-    </a>
   </nav>
 </header>
 
