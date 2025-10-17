@@ -25,10 +25,10 @@ jobs:
           lfs: false
 
       # ✅ Usa Node 20 para que Angular pueda buildar
-      - name: Use Node 20.x
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20.19.0'
+          node-version: '20'
 
       # ✅ Instala dependencias Angular
       - name: Install dependencies
@@ -73,4 +73,5 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           action: "close"
+
 
