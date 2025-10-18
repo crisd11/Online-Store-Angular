@@ -17,13 +17,14 @@ jobs:
     permissions:
       id-token: write
       contents: read
+
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
 
-      # Uso Node 20 para compilar Angular sin Oryx
+      # Node 20 para compilar Angular sin que intervenga Oryx
       - name: Use Node 20.x
         uses: actions/setup-node@v4
         with:
@@ -36,14 +37,24 @@ jobs:
       - name: Build Angular app
         run: npm run build
 
-      # Deploy SIN volver a buildar (evita Oryx/Node 18)
+      # Obtener ID token de GitHub (OIDC) para autenticar con Azure
+      - name: Get GitHub ID Token
+        uses: actions/github-script@v7
+        id: idtoken
+        with:
+          script: |
+            const core = require('@actions/core');
+            return await core.getIDToken();
+          result-encoding: string
+
       - name: Upload prebuilt app to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         id: swa
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_MUSHROOM_0D0E4B30F }}
+          github_id_token: ${{ steps.idtoken.outputs.result }}
           action: "upload"
-          app_location: "dist/online-store/browser"
+          app_location: "/"
+          output_location: "dist/online-store/browser"
           skip_app_build: true
           skip_api_build: true
 
@@ -51,12 +62,22 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
+    permissions:
+      id-token: write  # necesario también en este job si va a usar OIDC
+      contents: read
+
     steps:
+      - name: Get GitHub ID Token
+        uses: actions/github-script@v7
+        id: idtoken
+        with:
+          script: |
+            const core = require('@actions/core');
+            return await core.getIDToken();
+          result-encoding: string
+
       - name: Close Pull Request
         uses: Azure/static-web-apps-deploy@v1
         with:
+          github_id_token: ${{ steps.idtoken.outputs.result }}
           action: "close"
-
-
-
-
