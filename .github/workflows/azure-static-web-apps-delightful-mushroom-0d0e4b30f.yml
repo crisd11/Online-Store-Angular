@@ -15,15 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
-      id-token: write
-      contents: read
-
+       id-token: write
+       contents: read
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
-
+          
+          # Uso Node 20 para compilar Angular sin Oryx
       - name: Use Node 20.x
         uses: actions/setup-node@v4
         with:
@@ -35,40 +35,39 @@ jobs:
 
       - name: Build Angular app
         run: npm run build
-
-      # ✅ Obtener el ID token sin usar require ni declarar variables extra
-      - name: Get GitHub ID Token
+        
+      - name: Install OIDC Client from Core Package
+        run: npm install @actions/core@1.6.0 @actions/http-client
+      - name: Get Id Token
+        uses: actions/github-script@v6
         id: idtoken
-        run: |
-          echo "token=$(echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN)" >> $GITHUB_OUTPUT
-
-      - name: Upload prebuilt app to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        id: swa
         with:
-          github_id_token: ${{ steps.idtoken.outputs.token }}
+           script: |
+               const coredemo = require('@actions/core')
+               return await coredemo.getIDToken()
+           result-encoding: string
+           
+      - name: Upload prebuilt app to Azure Static Web Apps
+        id: swa
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DELIGHTFUL_MUSHROOM_0D0E4B30F }}
           action: "upload"
-          app_location: "/"
-          output_location: "dist/online-store/browser"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "dist/online-store/browser" # App source code path
+          output_location: "" # Built app content directory - optional
           skip_app_build: true
           skip_api_build: true
+          github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
-      - name: Get GitHub ID Token
-        id: idtoken
-        run: |
-          echo "token=$(echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN)" >> $GITHUB_OUTPUT
-
       - name: Close Pull Request
+        id: closepullrequest
         uses: Azure/static-web-apps-deploy@v1
         with:
-          github_id_token: ${{ steps.idtoken.outputs.token }}
           action: "close"
