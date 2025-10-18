@@ -3,19 +3,21 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { LoginRequest, RegisterRequest, AuthResponse } from '../models/auth.model';
 import { TokenService } from './token.service';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private baseUrl = '/api/auth';
+  private baseUrl: string;
   private loginSuccessSubject = new Subject<void>();
   loginSuccess$ = this.loginSuccessSubject.asObservable();
   private loggedIn = new BehaviorSubject<boolean>(this.isLoggedIn());
   loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private envService: EnvService) {
+    this.baseUrl = this.envService.apiUrl + '/api/auth';
     const token = this.tokenService?.getToken();
     this.loggedIn.next(!!token);
   }

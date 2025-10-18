@@ -4,21 +4,22 @@ import { Product } from '../models/product.model';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { EnvService } from './env.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+  
+  private baseUrl: string;
   private items: CartItem[] = [];
   private itemsSubject = new BehaviorSubject<CartItem[]>(this.items);
   items$ = this.itemsSubject.asObservable();
-
   private cartCount = new BehaviorSubject<number>(0);
   cartCount$ = this.cartCount.asObservable();
 
-  private baseUrl = '/api/cart';
-
-  constructor(private http: HttpClient, private auth: AuthService) {
+  constructor(private http: HttpClient, private auth: AuthService, private envService: EnvService) {
+    this.baseUrl = this.envService.apiUrl + '/api/cart';
     if (this.auth.isLoggedIn()) {
       this.syncWithBackend();
     }

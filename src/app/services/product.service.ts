@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product, ProductQuery, PagedResult } from '../models/product.model';
+import { EnvService } from './env.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private baseUrl = '/api/products';
+  private baseUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private envService: EnvService) {
+    this.baseUrl = this.envService.apiUrl + '/api/products';
+  }
 
   getProducts(query: ProductQuery): Observable<PagedResult<Product>> {
     let params = new HttpParams();
