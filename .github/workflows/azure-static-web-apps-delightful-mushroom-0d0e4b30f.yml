@@ -24,7 +24,6 @@ jobs:
           submodules: true
           lfs: false
 
-      # Node 20 para compilar Angular sin que intervenga Oryx
       - name: Use Node 20.x
         uses: actions/setup-node@v4
         with:
@@ -37,21 +36,17 @@ jobs:
       - name: Build Angular app
         run: npm run build
 
-      # Obtener ID token de GitHub (OIDC) para autenticar con Azure
+      # ✅ Obtener el ID token sin usar require ni declarar variables extra
       - name: Get GitHub ID Token
-        uses: actions/github-script@v7
         id: idtoken
-        with:
-          script: |
-            const core = require('@actions/core');
-            return await core.getIDToken();
-          result-encoding: string
+        run: |
+          echo "token=$(echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN)" >> $GITHUB_OUTPUT
 
       - name: Upload prebuilt app to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         id: swa
         with:
-          github_id_token: ${{ steps.idtoken.outputs.result }}
+          github_id_token: ${{ steps.idtoken.outputs.token }}
           action: "upload"
           app_location: "/"
           output_location: "dist/online-store/browser"
@@ -63,21 +58,17 @@ jobs:
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     permissions:
-      id-token: write  # necesario también en este job si va a usar OIDC
+      id-token: write
       contents: read
 
     steps:
       - name: Get GitHub ID Token
-        uses: actions/github-script@v7
         id: idtoken
-        with:
-          script: |
-            const core = require('@actions/core');
-            return await core.getIDToken();
-          result-encoding: string
+        run: |
+          echo "token=$(echo $ACTIONS_ID_TOKEN_REQUEST_TOKEN)" >> $GITHUB_OUTPUT
 
       - name: Close Pull Request
         uses: Azure/static-web-apps-deploy@v1
         with:
-          github_id_token: ${{ steps.idtoken.outputs.result }}
+          github_id_token: ${{ steps.idtoken.outputs.token }}
           action: "close"
