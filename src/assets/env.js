@@ -1,4 +1,4 @@
 (function (window) {
-  window.env = window.env || {};
-  window.env.API_URL = window['API_URL'];
+  window.__env = window.__env || {};
+  window.__env.API_URL = "https://online-store-api-b0ebe5dvbucma8b6.brazilsouth-01.azurewebsites.net";
 })(this);
