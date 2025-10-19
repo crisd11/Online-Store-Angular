@@ -36,6 +36,9 @@ jobs:
       - name: Build Angular app
         run: npm run build
         
+      - name: Copy staticwebapp.config.json
+        run: cp staticwebapp.config.json dist/online-store/browser/staticwebapp.config.json
+  
       - name: Install OIDC Client from Core Package
         run: npm install @actions/core@1.6.0 @actions/http-client
       - name: Get Id Token
