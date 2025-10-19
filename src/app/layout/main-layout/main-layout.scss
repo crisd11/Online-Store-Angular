@@ -1,9 +1,12 @@
 @use 'styles/variables' as *;
 
 .main-content {
-  min-height: calc(100vh - 64px - 64px);
-  padding: 6rem 1rem 2rem; /* espacio por header fijo */
+  min-height: calc(100vh - 128px);
+  padding: 2rem 1rem; /* espacio por header fijo */
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,34 +1,38 @@
 @use '../../../styles/variables' as *;
 
+/* El layout ya centra vertical y horizontalmente */
 :host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 120px); // Ajuste según alto del header+footer
-  padding: 1rem 0; // Para que no quede pegado
+  display: block;
+  width: 100%;
 }
 
+/* Contenedor principal del componente */
 .login-wrapper {
   width: 100%;
-  max-width: 380px;
+  display: flex;
+  justify-content: center;
 }
 
+/* Card con ancho amplio y consistente con Register */
 .login-card {
-  width: 100%; 
+  width: 100%;
+  max-width: min(400px, 80vw); // Mismo criterio que Register (podés subir a 700/800 si querés)
   padding: 2rem;
   border-radius: $border-radius;
   box-shadow: $card-shadow;
   background-color: $card-bg;
 
   h2 {
-    margin: 0 0 1rem 0;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
   }
 }
 
+/* Logo */
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   .logo {
     width: 120px;
@@ -36,6 +40,7 @@
   }
 }
 
+/* Formulario */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -46,6 +51,14 @@
   }
 }
 
+/* Botón principal */
+button[mat-raised-button],
+button[mat-flat-button] {
+  height: 44px;
+  font-weight: 600;
+}
+
+/* Utilidades */
 .text-center {
   text-align: center;
 }
@@ -58,11 +71,11 @@
   margin-top: 1rem;
 }
 
-.error {
-  color: $warn-color;
-  font-size: 0.9rem;
+.mt-1 {
+  margin-top: 0.5rem;
 }
 
+/* Links */
 .recover-link {
   cursor: pointer;
   color: #1976d2;
@@ -71,4 +84,10 @@
   &:hover {
     opacity: 0.8;
   }
+}
+
+/* Errores */
+.error {
+  color: $warn-color;
+  font-size: 0.9rem;
 }

@@ -20,7 +20,7 @@
         <mat-error *ngIf="form.controls['password'].hasError('required')">Password is required</mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="full-width mt-2" [disabled]="form.invalid || loading">
+      <button mat-flat-button color="primary" class="full-width mt-2" [disabled]="form.invalid || loading">
         <ng-container *ngIf="!loading">Log in</ng-container>
         <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
       </button>

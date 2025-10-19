@@ -56,9 +56,9 @@
         <p class="price">{{ p.price | currency:'USD':'symbol' }}</p>
         <p class="category" *ngIf="p.category">{{ p.category }}</p>
       </div>
-      <button mat-raised-button color="primary" (click)="addToCart(p)">
+      <button mat-flat-button color="primary" (click)="addToCart(p)">
         <mat-icon>add_shopping_cart</mat-icon>
-        Agregar
+        Add to Cart
       </button>
     </mat-card>
   </section>
