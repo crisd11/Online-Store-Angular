@@ -4,7 +4,11 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: calc(100vh - 100px); // Ajusta según tu header
+
+  // Ocupa solo el área libre entre header y footer
+  min-height: calc(100vh - 160px); // Ajustá si tu header+footer miden más o menos
+
+  padding: 1rem;
 
   h1 {
     font-size: 2rem;

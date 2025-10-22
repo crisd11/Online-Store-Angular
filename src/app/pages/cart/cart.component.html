@@ -99,11 +99,11 @@
   <div class="cart-summary">
     <p><strong>Total:</strong> {{ getTotal() | currency }}</p>
     <div class="buttons">
-      <button mat-raised-button color="primary" (click)="checkout()">
-        To Payment
-      </button>
-      <button mat-stroked-button color="warn" (click)="clearCart()">
+      <button mat-stroked-button color="primary" (click)="clearCart()">
         Empty Cart
+      </button>
+      <button mat-flat-button color="primary" (click)="checkout()">
+        To Payment
       </button>
     </div>
   </div>

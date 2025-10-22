@@ -35,7 +35,7 @@ export class CatalogComponent implements OnInit {
   loading = signal(false);
   form!: FormGroup;
   
-  categories = ['Audio', 'Peripheral', 'Tablets', 'Notebooks'];
+  categories = ['Audio', 'Peripheral', 'Tablets', 'Notebooks', 'Cameras'];
 
   constructor(private fb: FormBuilder,
     private productService: ProductService,

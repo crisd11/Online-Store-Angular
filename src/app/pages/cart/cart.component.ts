@@ -37,7 +37,7 @@ export class CartComponent {
   changeQuantity(id: number, quantity: number) {
   if (quantity <= 0) {
     this.snackBar.open(
-      'Para eliminar un producto, usá el botón correspondiente.',
+      'To eliminate a product, use the corresponding button.',
       'OK',
       { duration: 5000,
         horizontalPosition: 'center',
