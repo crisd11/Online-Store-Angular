@@ -110,10 +110,17 @@
 </div>
 
 <ng-template #emptyCart>
-  <div class="empty-cart">
-    <p>Your Cart is empty</p>
-    <button mat-raised-button color="primary" routerLink="/catalog">
-      Back to Catalog
+  <div class="empty-cart fade-in">
+    <div class="empty-icon">
+      <mat-icon>shopping_cart</mat-icon>
+    </div>
+
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven’t added anything yet.</p>
+
+    <button mat-flat-button color="primary" routerLink="/catalog">
+      <mat-icon>storefront</mat-icon>
+      Browse Products
     </button>
   </div>
 </ng-template>

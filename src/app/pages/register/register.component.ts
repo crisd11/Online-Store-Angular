@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   standalone: true,
@@ -17,7 +19,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule, RouterModule, ReactiveFormsModule,
     MatCardModule, MatFormFieldModule, MatInputModule,
-    MatButtonModule, MatProgressSpinnerModule
+    MatButtonModule, MatProgressSpinnerModule, MatSnackBarModule
   ]
 })
 export class RegisterComponent implements OnInit {
@@ -25,7 +27,7 @@ export class RegisterComponent implements OnInit {
   error: string | null = null;
   loading = false;
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -36,14 +38,29 @@ export class RegisterComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.form.invalid) return;
-    this.loading = true;
-    this.auth.register(this.form.value).subscribe({
-      next: () => this.router.navigate(['/catalog']),
-      error: err => {
-        this.error = err?.error?.message ?? 'Error al registrarse';
-        this.loading = false;
-      }
-    });
-  }
+  if (this.form.invalid)
+    return;
+
+  this.loading = true;
+  this.auth.register(this.form.value).subscribe({
+    next: () => {
+      this.loading = false;
+      this.snackBar.open('✅ User created successfully. Redirecting to Login...', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success']
+      });
+
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 3000);
+    },
+    error: err => {
+      this.error = err?.error?.message ?? 'Error while registering';
+      this.loading = false;
+    }
+  });
+}
+
 }

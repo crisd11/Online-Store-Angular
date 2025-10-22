@@ -14,6 +14,9 @@ import { ProductService } from '../../services/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmAddDialogComponent } from '../../shared/confirm-add-dialog/confirm-add-dialog.component'
 import { CartService } from '../../services/cart.service';
+import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -24,7 +27,7 @@ import { CartService } from '../../services/cart.service';
     CommonModule, ReactiveFormsModule,
     MatCardModule, MatFormFieldModule, MatInputModule,
     MatSelectModule, MatButtonModule, MatIconModule,
-    MatPaginatorModule
+    MatPaginatorModule, MatSnackBarModule
   ]
 })
 export class CatalogComponent implements OnInit {
@@ -37,10 +40,8 @@ export class CatalogComponent implements OnInit {
   
   categories = ['Audio', 'Peripheral', 'Tablets', 'Notebooks', 'Cameras'];
 
-  constructor(private fb: FormBuilder,
-    private productService: ProductService,
-    private cartService: CartService,
-    private dialog: MatDialog) {}
+  constructor(private fb: FormBuilder, private productService: ProductService, private cartService: CartService,
+    private dialog: MatDialog, private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -92,6 +93,16 @@ export class CatalogComponent implements OnInit {
   }
 
   addToCart(p: Product) {
+  if (!this.authService.isLoggedIn()) {
+    this.snackBar.open('You must log in to add products to your cart.', 'Login', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+    }).onAction().subscribe(() => {
+      this.router.navigate(['/login']);
+    });
+    return;
+  }
   const dialogRef = this.dialog.open(ConfirmAddDialogComponent, {
     data: p,
     width: '400px'

@@ -1,13 +1,12 @@
 @use '../../../styles/variables' as *;
 
-/* Contenedor principal */
 .cart-container {
   width: 100%;
-  max-width: 1150px; // Más ancho sin romper el layout
+  max-width: 1150px;
   margin: 0 auto;
   padding: 2rem;
   animation: fadeIn 0.3s ease-in-out;
-  background-color: #ccf4f4; // Podés cambiarlo a otro tono claro
+  background-color: #ccf4f4;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.05);
@@ -22,7 +21,6 @@
   }
 }
 
-/* ---- Desktop Table ---- */
 .cart-table-wrapper {
   overflow-x: auto;
   margin-bottom: 2rem;
@@ -102,7 +100,7 @@
   }
 }
 
-/* ---- Mobile Cards ---- */
+
 .mobile-only {
   display: none;
 
@@ -164,7 +162,6 @@
   }
 }
 
-/* ---- Cart resumen ---- */
 .cart-summary {
   margin-top: 2rem;
   text-align: center;
@@ -188,7 +185,6 @@
   }
 }
 
-/* ---- Empty cart ---- */
 .empty-cart {
   text-align: center;
   padding: 3rem 1rem;
